@@ -20,5 +20,7 @@
   },
   "homepage": "https://github.com/KMK-ONLINE/barong#readme",
   "dependencies": {
+    "glob": "^5.0.15",
+    "slug": "^0.9.1"
   }
 }
