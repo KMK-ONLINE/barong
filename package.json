@@ -1,0 +1,24 @@
+{
+  "name": "barong",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "barong": "./bin/barong.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KMK-ONLINE/barong.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KMK-ONLINE/barong/issues"
+  },
+  "homepage": "https://github.com/KMK-ONLINE/barong#readme",
+  "dependencies": {
+  }
+}
