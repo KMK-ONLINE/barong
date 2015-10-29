@@ -212,7 +212,7 @@ describe("Util", function() {
         "scenarios": [
           {
             "label": "Some Page",
-            "outputFile": outputPath
+            "output_file": outputPath
           }
         ]
       };
