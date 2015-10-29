@@ -183,6 +183,7 @@ describe("Util", function() {
     beforeAll(function(){
       spyOn(Util, "readBaseConfig").and.returnValue({
         "label": "Barong",
+        "capture_target": "bitmaps_test",
         "scenarios": []
       });
 
@@ -193,22 +194,30 @@ describe("Util", function() {
     });
 
     it("can read array of config files", function(){
+      var baseDir = "/path/";
       var files = {
-        "base": "/path/base.json",
+        "base": path.join(baseDir, "base.json"),
         "tests": [
-          "/path/test-folder/page.json",
-          "/path/test-folder/home.json"
+          path.join(baseDir, "/test-folder/page.json")
         ]
       };
 
       var result = Util.readConfig(files);
+      var outputFile = Util.generateFilename("Barong", "Some Page");
+      var outputPath = path.join(baseDir, "bitmaps_test", outputFile + '.png');
+
       var expected = {
         "label": "Barong",
+        "capture_target": "bitmaps_test",
         "scenarios": [
-          { "label": "Some Page" },
-          { "label": "Some Page" }
+          {
+            "label": "Some Page",
+            "outputFile": outputPath
+          }
         ]
       };
+
+      expect(result).toEqual(expected);
     });
   });
 
