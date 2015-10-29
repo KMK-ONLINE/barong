@@ -8,7 +8,7 @@
         "action": "hover",
         "selector": "#category-2"
       },
-      "selectors": {
+      "selector": {
         "left": 200,
         "top": 0,
         "height": 300,
