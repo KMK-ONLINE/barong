@@ -1,164 +1,232 @@
 "use strict"
 
-var Util = require('../lib/util.js');
-var path = require('path');
-var fs = require('fs');
-var assign = require('object-assign');
-var stringify = require('json-stable-stringify');
+var Util = require("../lib/util.js");
+var path = require("path");
+var fs = require("fs");
+var glob = require("glob");
+var assign = require("object-assign");
 
 describe("Util", function() {
-  
-  var testSaveTarget = path.join(__dirname, ".test-config.json");
-  var testCustomConfig = path.join(__dirname, ".custom-config.json");
-  
-  var config = {
-    "label": "Barong Default",
-    "engine" : "slimerjs",
-    "viewports": {
-      "width":  1400,
-      "height": 2000
-    },
-    "test_folder": "test",
-    "capture_target": "bitmaps_test",
-    "scenarios": []
-  };
-  
-  afterAll(function(){
-    fs.unlinkSync(testSaveTarget);
-    fs.unlinkSync(testCustomConfig);
+
+
+  describe("readJSON", function(){
+
+    var testConfig = path.join(__dirname, ".custom-config.json");
+
+    beforeAll(function(){
+      var json = {
+        "label": "Barong Custom",
+        "test_folder": "spec"
+      };
+
+      Util.saveFile(testConfig, json);
+    });
+
+    afterAll(function(){
+      fs.unlinkSync(testConfig);
+    });
+
+    it("can read JSON file", function(){
+      var result = Util.readJSON(testConfig);
+      var expected = {
+        "label": "Barong Custom",
+        "test_folder": "spec"
+      };
+
+      expect(result).toEqual(expected);
+    });
   });
 
-  it('can read JSON file', function(){
-    var configFile = path.normalize(__dirname + '/../config.json');
-    var result = Util.readJSON(configFile);
-    var expected = {
-      "label": "Barong Default",
-      "test_folder": "test"
-    };
-
-    expect(result).toEqual(expected);
-  });
-
-  it("can read the config file and extend from default params", function() {
-    var result = Util.readBaseConfig();
-    var expected = config;
-
-    expect(result).toEqual(expected);
-  });
-
-  it("can read the custom config file and extend from default params", function() {
-    var customConfigJSON = {
+  describe("readBaseConfig", function(){
+    var configJSON = {
       "label": "Barong Custom",
       "test_folder": "spec"
     };
-    Util.saveFile(testCustomConfig, customConfigJSON);
+    var defaultJSON = {
+      "test_folder": "spec",
+      "scenarios": []
+    };
 
-    var result = stringify(Util.readBaseConfig(testCustomConfig));
-    var expected = {};
-    
-    assign(expected, config, customConfigJSON);
-    expected = stringify(expected);
+    beforeAll(function(){
+      spyOn(Util, "readJSON").and.returnValue(configJSON);
+      spyOn(Util, "defaults").and.returnValue(defaultJSON);
+    });
 
-    expect(result).toEqual(expected);
+    it("can read config file and extend from default params", function() {
+      var result = Util.readBaseConfig("/path/to/file.json");
+      var expected = {
+      "label": "Barong Custom",
+        "test_folder": "spec",
+        "scenarios": []
+      };
+
+      expect(result).toEqual(expected);
+    });
   });
 
-  it("can get test folder", function(){
-    var result = Util.testFolder();
-    var expected = path.normalize(__dirname + '/../test');
+  describe("slugify", function(){
+    it("can convert given string to url-save characters", function(){
+      var string = "unicode ♥ is ☢";
+      var result = Util.slugify(string);
+      var expected = "unicode-love-is-radioactive";
 
-    expect(result).toEqual(expected);
+      expect(result).toEqual(expected);
+    });
   });
 
-  it("can convert given string to url-save characters", function(){
-    var string = 'unicode ♥ is ☢';
-    var result = Util.slugify(string);
-    var expected = 'unicode-love-is-radioactive';
+  describe("generateFilename", function(){
+    it("can generate the filename output based on scenario and captures label", function(){
+      var scenarioLabel = "Home";
+      var captureLabel = "hover on News nav";
+      var result = Util.generateFilename(scenarioLabel, captureLabel);
+      var expected = "home__hover-on-news-nav";
 
-    expect(result).toEqual(expected);
+      expect(result).toEqual(expected);
+    });
   });
 
-  it("can generate the filename output based on scenario and captures label", function(){
-    var scenarioLabel = 'Home';
-    var captureLabel = 'hover on News nav';
-    var result = Util.generateFilename(scenarioLabel, captureLabel);
-    var expected = 'home__hover-on-news-nav';
+  describe("testFolder", function(){
+    var fakeConfig = {"test_folder": "fake-config-liputan6"};
 
-    expect(result).toEqual(expected);
+    beforeAll(function(){
+      spyOn(Util, "readJSON").and.returnValue(fakeConfig);
+    });
+
+    it("return the test folder of given json file", function(){
+      var result = Util.testFolder("/fake.config.json");
+      var expected = fakeConfig.test_folder;
+
+      expect(result).toEqual(expected);
+    });
   });
 
-  it("can append scenarios[] with specific *.js file inside the test folder", function(){
-    // TODO: need to be able to do something like the following:
-    // > barong config.json/liputan6-logo.json
-    // meaning, it read the test_folder inside the config.json first, to locate
-    // the liputan6-logo.json. The it put the liputan6-logo.json inside the 
-    // config.json scenario
-    //
-    // var result = Util.readSpecificConfig('config.json/liputan6-logo.json');
-    
-    var result = Util.readSpecificConfig('liputan6-logo.json');
-    var expected =  Util.readBaseConfig();
-    expected.scenarios = expected.scenarios.concat([{
-      "label": "Liputan6",
-      "url": "http://www.liputan6.dev:8000",
-      "captures": [
-        {
-          "label": "Logo",
-          "selectors": [".navbar--top__logo"]
-        }
-      ]
-    }]);
+  describe("readDir", function(){
+    var files = [
+      "/path/home.json",
+      "/path/category.json"
+    ];
 
-    expect(result).toEqual(expected);
+    beforeAll(function(){
+      spyOn(glob, "sync").and.returnValue(files);
+    });
+
+    it("return list of test files in the given path", function(){
+      var test_folder = "/liputan6";
+      var result = Util.readDir(test_folder);
+      var expected = files;
+
+      expect(result).toEqual(expected);
+    });
   });
 
-  it("can append scenarios[] with all *.js file inside the test folder", function(){
-    var result = Util.readConfig();
-    var expected = config;
+  describe("getConfigFiles", function(){
+    var testFolder = "test-folder";
 
-    expected.scenarios = expected.scenarios.concat([{
-      "label": "Home",
-      "url": "http://www.liputan6.dev:8000",
-      "captures": [
-        {
-          "label": "hover on News nav",
-          "before_capture": {
-            "action": "hover",
-            "selector": "#category-2"
-          },
-          "selectors": [{
-            "left": 200,
-            "top": 0,
-            "height": 300,
-            "width": 300
-          }]
-        }
-      ],
-      "misMatchThreshold" : 1.0
-    }]);
+    beforeAll(function(){
+      spyOn(Util, "testFolder").and.returnValue(testFolder);
+    });
 
-    expected.scenarios = expected.scenarios.concat([{
-      "label": "Liputan6",
-      "url": "http://www.liputan6.dev:8000",
-      "captures": [
-        {
-          "label": "Logo",
-          "selectors": [".navbar--top__logo"]
-        }
-      ]
-    }]);
+    it("return default config with its test files when the param is empty", function(){
+      var configFile = path.join(__dirname, "../config.json");
+      var baseDir = path.dirname(configFile);
+      var files = [
+        path.join(baseDir, testFolder, "page1.json"),
+        path.join(baseDir, testFolder, "page2.json")
+      ];
+      var expected = {
+        "base": configFile,
+        "tests": files
+      };
 
-    expect(result).toEqual(expected);
+      spyOn(Util, "readDir").and.returnValue(files);
+      var result = Util.getConfigFiles();
+
+      expect(result).toEqual(expected);
+    });
+
+    it("return specified config with its tests of the given config param", function(){
+      var baseDir = "/test";
+      var configParam = "liputan6";
+      var configFile = path.join(baseDir, configParam + ".json");
+      var files = [
+        path.join(baseDir, testFolder, "page1.json"),
+        path.join(baseDir, testFolder, "page2.json")
+      ];
+      var expected = {
+        "base": configFile,
+        "tests": files
+      };
+
+      spyOn(Util, "readDir").and.returnValue(files);
+      var result = Util.getConfigFiles(configParam, baseDir);
+
+      expect(result).toEqual(expected);
+    });
+
+    it("return full path of specific test file from the given config param", function(){
+      var baseDir = "/test";
+      var configParam = "liputan6:home";
+      var configFile = path.join(baseDir, "liputan6.json");
+      var expected = {
+        "base": configFile,
+        "tests": [
+          path.join(baseDir, testFolder, "home.json")
+        ]
+      };
+      var result = Util.getConfigFiles(configParam, baseDir);
+
+      expect(result).toEqual(expected);
+    });
   });
 
+  describe("readConfig", function(){
+    beforeAll(function(){
+      spyOn(Util, "readBaseConfig").and.returnValue({
+        "label": "Barong",
+        "scenarios": []
+      });
 
-  it("can save json config to file", function(){
-    var source = {"test": 1};
-    
-    Util.saveFile(testSaveTarget, source);
-    var readResult = Util.readJSON(testSaveTarget);
+      spyOn(Util, "readJSON").and.returnValue({
+        "label": "Some Page"
+      });
 
-    expect(readResult).toEqual(source);
-  })
+    });
 
+    it("can read array of config files", function(){
+      var files = {
+        "base": "/path/base.json",
+        "tests": [
+          "/path/test-folder/page.json",
+          "/path/test-folder/home.json"
+        ]
+      };
+
+      var result = Util.readConfig(files);
+      var expected = {
+        "label": "Barong",
+        "scenarios": [
+          { "label": "Some Page" },
+          { "label": "Some Page" }
+        ]
+      };
+    });
+  });
+
+  describe("saveFile", function(){
+    var testSaveTarget = path.join(__dirname, ".test-config.json");
+
+    afterAll(function(){
+      fs.unlinkSync(testSaveTarget);
+    });
+
+    it("can save json config to file", function(){
+      var source = {"test": 1};
+
+      Util.saveFile(testSaveTarget, source);
+      var readResult = Util.readJSON(testSaveTarget);
+
+      expect(readResult).toEqual(source);
+    });
+  });
 
 });

@@ -8,12 +8,12 @@
         "action": "hover",
         "selector": "#category-2"
       },
-      "selectors": [{
+      "selectors": {
         "left": 200,
         "top": 0,
         "height": 300,
         "width": 300
-      }]
+      }
     }
   ],
   "misMatchThreshold" : 1.0

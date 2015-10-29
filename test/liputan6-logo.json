@@ -4,7 +4,7 @@
   "captures": [
     {
       "label": "Logo",
-      "selectors": [".navbar--top__logo"]
+      "selectors": ".navbar--top__logo"
     }
   ]
 }
