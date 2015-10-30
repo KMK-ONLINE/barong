@@ -25,6 +25,7 @@
     "slug": "^0.9.1"
   },
   "devDependencies": {
+    "image-size": "^0.3.5",
     "json-stable-stringify": "^1.0.0"
   }
 }
