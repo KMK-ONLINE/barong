@@ -6,7 +6,7 @@ var fs     = require("fs");
 var glob   = require("glob");
 var assign = require("object-assign");
 
-var DEFAULT_CONFIG_FILENAME = 'config.json';
+var DEFAULT_CONFIG_FILENAME = 'barong.json';
 
 describe("Util", function() {
 
@@ -121,15 +121,6 @@ describe("Util", function() {
   });
 
   describe("getBaseConfigFile", function(){
-    it("if default config file not found, return false",function(){
-      spyOn(fs, 'existsSync').and.returnValue(false);
-
-      var cwd      = "/some/path";
-      var result   = Util.getBaseConfigFile(cwd);
-      var expected = false;
-
-      expect(result).toBe(expected);
-    });
 
     it("if no configParams passed, return the default config file in current directory",function(){
       spyOn(fs, 'existsSync').and.returnValue(true);
@@ -142,6 +133,8 @@ describe("Util", function() {
     });
 
     it("if single configParam provided, return the specified config file in current directory",function(){
+      spyOn(fs, 'existsSync').and.returnValue(true);
+
       var cwd         = "/some/path";
       var configParam = "liputan6";
       var result      = Util.getBaseConfigFile(cwd, configParam);
@@ -151,12 +144,26 @@ describe("Util", function() {
     });
 
     it("if specific configParam provided, return the specified config file in current directory",function(){
+      spyOn(fs, 'existsSync').and.returnValue(true);
+
       var cwd         = "/some/path";
       var configParam = "liputan6:home";
       var result      = Util.getBaseConfigFile(cwd, configParam);
       var expected    = path.join(cwd, 'liputan6.json');
 
       expect(result).toEqual(expected);
+    });
+
+    it("return false if file is not exists", function(){
+      spyOn(fs, "existsSync").and.returnValue(false);
+
+      var resultWithNoParam = Util.getBaseConfigFile('/some/path');
+      var resultWithParam = Util.getBaseConfigFile('/some/path', 'config');
+      var resultWithSpecific = Util.getBaseConfigFile('/some/path', 'config:page');
+
+      expect(resultWithNoParam).toBe(false);
+      expect(resultWithParam).toBe(false);
+      expect(resultWithSpecific).toBe(false);
     });
   });
 
@@ -199,6 +206,9 @@ describe("Util", function() {
           "/some/path/test-folder/page2.json"
         ]
       };
+
+      expect(result).toEqual(expected);
+      expect(Util.getBaseConfigFile).toHaveBeenCalledWith(cwd, configParam);
     });
   });
 
@@ -211,7 +221,13 @@ describe("Util", function() {
       });
 
       spyOn(Util, "readJSON").and.returnValue({
-        "label": "Some Page"
+        "label": "Some Page",
+        "captures": [
+          {
+            "label": "all page",
+            "selector": "body"
+          }
+        ]
       });
 
     });
@@ -226,7 +242,7 @@ describe("Util", function() {
       };
 
       var result     = Util.readConfig(cwd, files);
-      var outputFile = Util.generateFilename("Barong", "Some Page");
+      var outputFile = Util.generateFilename("Some Page", "all page");
       var outputPath = path.join(cwd, "bitmaps_test", outputFile + '.png');
       var expected   = {
         "label"          : "Barong",
@@ -234,12 +250,33 @@ describe("Util", function() {
         "scenarios"      : [
           {
             "label"       : "Some Page",
-            "output_file" : outputPath
+            "captures": [
+              {
+                "label": "all page",
+                "selector": "body",
+                "output_file" : outputPath
+              }
+            ]
           }
         ]
       };
 
       expect(result).toEqual(expected);
+    });
+
+    it("return error there's duplicate capture label in the same scenario", function(){
+      var cwd   = "/local/path/";
+      var files = {
+        "base"  : "/default/path/base.json",
+        "tests" : [
+          "/default/path/test-folder/page.json",
+          "/default/path/test-folder/page.json"
+        ]
+      };
+      expect(function() {
+        Util.readConfig(cwd, files);
+      }).toThrowError("Duplicate capture label");
+
     });
   });
 
