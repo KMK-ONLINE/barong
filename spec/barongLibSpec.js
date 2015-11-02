@@ -39,7 +39,7 @@ describe("BarongLib", function(){
 
     var configJSON = {
       "label": "Test Base",
-      "viewports": {
+      "viewport": {
         "width":  1400,
         "height": 2000
       },
