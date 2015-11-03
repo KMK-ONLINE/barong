@@ -120,6 +120,25 @@ describe("Util", function() {
     });
   });
 
+  describe("parseConfigParams", function(){
+    it("when params is null return null", function(){
+      var result = Util.parseConfigParams();
+      expect(result).toBe(null);
+    });
+
+    it("when params no have colon should return array", function(){
+      var result   = Util.parseConfigParams("liputan6");
+      var expected = ['liputan6'];
+      expect(result).toEqual(expected);
+    });
+
+    it("when params liputan6:home should return array", function(){
+      var result   = Util.parseConfigParams("liputan6:home");
+      var expected = ['liputan6', 'home'];
+      expect(result).toEqual(expected);
+    });
+  });
+
   describe("getBaseConfigFile", function(){
 
     it("if no configParams passed, return the default config file in current directory",function(){
@@ -180,6 +199,18 @@ describe("Util", function() {
       var expected   = path.join(path.dirname(configFile), testFolder);
 
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe("getTestGlob", function(){
+    it("when params 'liputan6' should return *.json", function(){
+      var result = Util.getTestGlob("liputan6");
+      expect(result).toEqual("*.json");
+    });
+
+    it("when params liputan6:home should return home.json", function(){
+      var result = Util.getTestGlob("liputan6:home");
+      expect(result).toEqual("home.json");
     });
   });
 
