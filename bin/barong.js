@@ -5,28 +5,44 @@
 var BarongLib = require('../lib/barongLib.js');
 var dashdash = require('dashdash');
 
-var cwd = process.cwd();
-var command = process.argv[2];
-
 var options = [
+  {
+    names: ['help', 'h'],        // first name is opts key
+    type: 'bool',
+    help: 'Print this help and exit.'
+  },
   {
     names: ['save', 's'],
     type: 'string',
-    save: 'Save to target folder.',
-    default: 'reference'
+    help: 'Save to target folder.',
+  default: 'reference'
   }
 ];
+var parser = dashdash.createParser({options: options});
 
 try {
-  var opts = dashdash.parse({options: options});
+  var opts = parser.parse(process.argv);
 } catch (e) {
   console.error('Barong error: %s', e.message);
   process.exit(1);
 }
 
+var cwd = process.cwd();
+var command = opts._args[0] || 'capture';
+
 var configParams = {
-  configFile: process.argv[3] || 'barong',
+  configFile: opts._args[1] || 'barong',
   targetFolder: opts.save
+}
+
+if (opts.help) {
+  var help = parser.help({includeEnv: true}).trimRight();
+  console.log(
+    'usage: \n    barong (capture|test) [CONFIG_NAME] [OPTIONS]\n'
+    + 'default: \n    barong capture barong \n'
+    + 'options:\n'
+    + help);
+  process.exit(0);
 }
 
 if(command === "capture"){
@@ -36,3 +52,4 @@ if(command === "capture"){
     console.log(e.stack);
   }
 }
+
