@@ -70,9 +70,12 @@ describe("BarongLib", function(){
 
     afterAll(function(){
       var targetFile = configJSON.scenarios[0].captures[0].output_file;
-      var dirname = path.dirname(targetFile);
+      var targetFolder = path.dirname(targetFile);
+      var outputFolder = path.join(targetFolder, '..');
+
       fs.unlink(targetFile);
-      fs.rmdir(dirname);
+      fs.rmdir(targetFolder);
+      fs.rmdir(outputFolder);
     });
 
     describe("with css selector", function(){
@@ -84,7 +87,7 @@ describe("BarongLib", function(){
             {
               "label": "Test Capture",
               "selector"    : ".navbar--top__logo",
-              "output_file" : path.join(dirname, outputFile + '.png')
+              "output_file" : path.join(dirname, configParams.targetFolder, outputFile + '.png')
             }
           ]
         };
@@ -119,7 +122,7 @@ describe("BarongLib", function(){
                 "width": 200,
                 "height": 400
               },
-              "output_file": path.join(dirname, outputFile + '.png')
+              "output_file" : path.join(dirname, configParams.targetFolder, outputFile + '.png')
             }
           ]
         };

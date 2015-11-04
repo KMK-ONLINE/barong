@@ -22,7 +22,9 @@
   "dependencies": {
     "dashdash": "^1.10.1",
     "glob": "^5.0.15",
+    "http-server": "^0.8.5",
     "js-beautify": "^1.5.10",
+    "node-resemble-js": "0.0.4",
     "object-assign": "^4.0.1",
     "slug": "^0.9.1"
   },

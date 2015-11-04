@@ -1,2 +1,4 @@
 node_modules
 .barong-config.json
+bitmaps_*/
+*.log

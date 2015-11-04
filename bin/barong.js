@@ -3,6 +3,7 @@
 "use strict";
 
 var BarongLib = require('../lib/barongLib.js');
+var BarongCompare = require('../lib/barongCompare.js');
 var dashdash = require('dashdash');
 
 var options = [
@@ -50,6 +51,20 @@ if(command === "capture"){
     BarongLib.capture(cwd, configParams);
   } catch (e) {
     console.log(e.stack);
+  }
+} else if (command == "test") {
+  var configFile = opts._args[1];
+  var folderA = opts._args[2];
+  var folderB = opts._args[3];
+
+  if (folderA && folderB) {
+    try {
+      BarongCompare.compare(cwd, configFile, folderA, folderB);
+    } catch (e) {
+      console.error(e.stack);
+    }
+  } else {
+    console.error('Apalah');
   }
 }
 

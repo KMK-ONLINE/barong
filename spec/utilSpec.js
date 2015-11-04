@@ -176,11 +176,9 @@ describe("Util", function() {
     it("return false if file is not exists", function(){
       spyOn(fs, "existsSync").and.returnValue(false);
 
-      // var resultWithNoParam = Util.getBaseConfigFile('/some/path');
       var resultWithParam = Util.getBaseConfigFile('/some/path', 'config');
       var resultWithSpecific = Util.getBaseConfigFile('/some/path', 'config:page');
 
-      // expect(resultWithNoParam).toBe(false);
       expect(resultWithParam).toBe(false);
       expect(resultWithSpecific).toBe(false);
     });
