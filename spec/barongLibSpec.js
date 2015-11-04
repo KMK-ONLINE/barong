@@ -33,9 +33,13 @@ describe("BarongLib", function(){
   });
 
   describe("capture", function(){
-    var cwd = path.join(__dirname, '..');
-    var dirname = path.join(cwd, 'bitmaps_test');
-    var outputFile = Util.generateFilename('Test Page', 'Test Capture');
+    var cwd          = path.join(__dirname, '..');
+    var dirname      = path.join(cwd, 'bitmaps_test');
+    var outputFile   = Util.generateFilename('Test Page', 'Test Capture');
+    var configParams = {
+      configFile: 'barong',
+      targetFolder: 'reference'
+    };
 
     var configJSON = {
       "label": "Test Base",
@@ -84,12 +88,13 @@ describe("BarongLib", function(){
             }
           ]
         };
+
         spyOn(Util, "readConfig").and.returnValue(configJSON);
-        BarongLib.capture(cwd, '', done);
+        BarongLib.capture(cwd, configParams, done);
       });
 
       it("called Util.readConfig with the correct params", function(){
-        expect(Util.readConfig).toHaveBeenCalledWith(cwd, files);
+        expect(Util.readConfig).toHaveBeenCalledWith(cwd, files, configParams.targetFolder);
       });
 
       it("can capture the selector", function(){
@@ -118,15 +123,16 @@ describe("BarongLib", function(){
             }
           ]
         };
+
         targetFile = configJSON.scenarios[0].captures[0].output_file;
         spyOn(Util, "readConfig").and.returnValue(configJSON);
-        BarongLib.capture('', '', done);
+        BarongLib.capture('', configParams, done);
       });
 
       it("can capture a region in a page", function(){
         var result = fs.existsSync(targetFile);
         expect(result).toBe(true);
-        expect(Util.readConfig).toHaveBeenCalledWith('', files);
+        expect(Util.readConfig).toHaveBeenCalledWith('', files, configParams.targetFolder);
       });
 
       it("capture the correct size", function(){
