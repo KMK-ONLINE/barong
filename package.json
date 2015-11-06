@@ -24,8 +24,10 @@
     "glob": "^5.0.15",
     "http-server": "^0.8.5",
     "js-beautify": "^1.5.10",
+    "node-handlebars": "^0.9.7",
     "node-resemble-js": "0.0.4",
     "object-assign": "^4.0.1",
+    "slimerjs": "^0.9.6",
     "slug": "^0.9.1"
   },
   "devDependencies": {
