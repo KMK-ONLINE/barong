@@ -2,69 +2,49 @@
 
 "use strict";
 
-var BarongLib = require('../lib/barongLib.js');
-var BarongCompare = require('../lib/barongCompare.js');
-var dashdash = require('dashdash');
+var Barong        = require('../lib/barong.js');
+var program       = require('commander');
+var cwd           = process.cwd();
 
-var options = [
-  {
-    names: ['help', 'h'],        // first name is opts key
-    type: 'bool',
-    help: 'Print this help and exit.'
-  },
-  {
-    names: ['save', 's'],
-    type: 'string',
-    help: 'Save to target folder.',
-  default: 'reference'
-  }
-];
-var parser = dashdash.createParser({options: options});
+program
+  .version('0.1.0')
+  .command('capture [config]')
+  .option('-s, --save <dir>', 'save output to specified directory, the default value is `reference`', 'reference')
+  .description('capture pages based on provided [config].json file, the default value is `barong`')
+  .action(function(config, options){
+    if(!config){
+      config = 'barong';
+    }
 
-try {
-  var opts = parser.parse(process.argv);
-} catch (e) {
-  console.error('Barong error: %s', e.message);
-  process.exit(1);
-}
-
-var cwd = process.cwd();
-var command = opts._args[0] || 'capture';
-
-var configParams = {
-  configFile: opts._args[1] || 'barong',
-  targetFolder: opts.save
-}
-
-if (opts.help) {
-  var help = parser.help({includeEnv: true}).trimRight();
-  console.log(
-    'usage: \n    barong (capture|test) [CONFIG_NAME] [OPTIONS]\n'
-    + 'default: \n    barong capture barong \n'
-    + 'options:\n'
-    + help);
-  process.exit(0);
-}
-
-if(command === "capture"){
-  try {
-    BarongLib.capture(cwd, configParams);
-  } catch (e) {
-    console.log(e.stack);
-  }
-} else if (command == "test") {
-  var configFile = opts._args[1];
-  var folderA = opts._args[2];
-  var folderB = opts._args[3];
-
-  if (folderA && folderB) {
     try {
-      BarongCompare.compare(cwd, configFile, folderA, folderB);
+      Barong.capture(cwd, {
+        configFile: config,
+        targetFolder: options.save
+      });
+    } catch (e) {
+      console.log(e.stack);
+    }
+  });
+
+program
+  .command('test <config>')
+  .option('-a, --against <dir>', 'test to specified directory, the default value is `reference`', 'reference')
+  .option('-s, --save <dir>', 'save output to specified directory, the default value is `test`', 'test')
+  .description('test pages and do comparison')
+  .action(function(config){
+    console.log('test', config)
+  });
+
+program
+  .command('compare <testDir> <referenceDir>')
+  .description('compare <testDir> with <referenceDir>')
+  .action(function(testDir, referenceDir, options){
+    try {
+      Barong.compare(cwd, testDir, referenceDir);
     } catch (e) {
       console.error(e.stack);
     }
-  } else {
-    console.error('Apalah');
-  }
-}
+  });
 
+program.parse(process.argv);
+if (!program.args.length) program.help();

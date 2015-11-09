@@ -6,8 +6,6 @@ var fs     = require("fs");
 var glob   = require("glob");
 var assign = require("object-assign");
 
-var DEFAULT_CONFIG_FILENAME = 'barong.json';
-
 describe("Util", function() {
 
 
@@ -141,16 +139,6 @@ describe("Util", function() {
 
   describe("getBaseConfigFile", function(){
 
-    xit("if no configParams passed, return the default config file in current directory",function(){
-      spyOn(fs, 'existsSync').and.returnValue(true);
-
-      var cwd      = "/some/path";
-      var result   = Util.getBaseConfigFile(cwd);
-      var expected = path.join(cwd, DEFAULT_CONFIG_FILENAME);
-
-      expect(result).toEqual(expected);
-    }).pend('Because configFile is already set in barong.js');
-
     it("if single configParam provided, return the specified config file in current directory",function(){
       spyOn(fs, 'existsSync').and.returnValue(true);
 
@@ -270,29 +258,6 @@ describe("Util", function() {
         ]
       };
 
-      xit("without params targetFolder", function(){
-        var result     = Util.readConfig(cwd, files);
-        var outputFile = Util.generateFilename("Some Page", "all page");
-        var outputPath = path.join(cwd, "bitmaps_test/reference", outputFile + '.png');
-        var expected   = {
-          "label"          : "Barong",
-          "capture_target" : "bitmaps_test",
-          "scenarios"      : [
-            {
-              "label"       : "Some Page",
-              "captures": [
-                {
-                  "label": "all page",
-                  "selector": "body",
-                  "output_file" : outputPath
-                }
-              ]
-            }
-          ]
-        };
-        expect(result).toEqual(expected);
-      }).pend('Because configFile is already set in barong.js');
-
       it("with params targetFolder", function(){
         var targetFolder = "some-target";
         var result       = Util.readConfig(cwd, files, targetFolder);
@@ -348,6 +313,35 @@ describe("Util", function() {
       var readResult = Util.readJSON(testSaveTarget);
 
       expect(readResult).toEqual(source);
+    });
+  });
+
+  describe("scanImages", function(){
+    beforeAll(function(){
+      var json = {};
+      var dir = path.join(__dirname, '.test');
+      fs.mkdirSync(dir);
+      Util.saveFile(path.join(__dirname, '.test', 'a.png'), json);
+      Util.saveFile(path.join(__dirname, '.test', 'b.png'), json);
+    });
+
+    afterAll(function(){
+      var json = {};
+      var dir = path.join(__dirname, '.test');
+      fs.unlinkSync(path.join(__dirname, '.test', 'a.png'), json);
+      fs.unlinkSync(path.join(__dirname, '.test', 'b.png'), json);
+      fs.rmdirSync(dir);
+    });
+
+    it("can get images inside a directory", function(){
+      var dir = path.join(__dirname, '.test');
+      var result = Util.scanImages(dir);
+      var expected = [
+        path.join(__dirname, '.test', 'a.png'),
+        path.join(__dirname, '.test', 'b.png')
+      ];
+
+      expect(result).toEqual(expected);
     });
   });
 
