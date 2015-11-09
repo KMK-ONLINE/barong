@@ -2,9 +2,9 @@
 
 "use strict";
 
-var Barong        = require('../lib/barong.js');
-var program       = require('commander');
-var cwd           = process.cwd();
+var Barong  = require('../lib/barong.js');
+var program = require('commander');
+var cwd     = process.cwd();
 
 program
   .version('0.1.0')
@@ -27,12 +27,23 @@ program
   });
 
 program
-  .command('test <config>')
+  .command('test [config]')
   .option('-a, --against <dir>', 'test to specified directory, the default value is `reference`', 'reference')
   .option('-s, --save <dir>', 'save output to specified directory, the default value is `test`', 'test')
   .description('test pages and do comparison')
-  .action(function(config){
-    console.log('test', config)
+  .action(function(config, options){
+    if(!config){
+      config = 'barong';
+    }
+
+    try {
+      Barong.test(cwd, {
+        configFile: config,
+        targetFolder: options.save
+      }, options.against);
+    } catch (e) {
+      console.log(e.stack);
+    }
   });
 
 program

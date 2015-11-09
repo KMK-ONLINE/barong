@@ -212,6 +212,28 @@ describe("Barong", function(){
       var expected = "No images found in test directory";
       expect(result).toThrowError(expected);
     });
+
+    describe("test", function(){
+      var refDir = 'test/path';
+
+      beforeEach(function(){
+        spyOn(Barong, 'getConfigJSON').and.returnValue({
+          "captureTarget": 'test'
+        });
+        spyOn(Barong, 'compare').and.returnValue(true);
+        spyOn(Barong, 'capture').and.callFake(function() {
+          Barong.compare(cwd, 'test/test', refDir);
+        });
+      });
+
+      it("test should be call capture method", function(){
+        var config = {configFile:"barong", targetFolder:"test"};
+        var result = Barong.test(cwd, config, refDir);
+        expect(Barong.getConfigJSON).toHaveBeenCalledWith(cwd, config);
+        expect(Barong.compare).toHaveBeenCalledWith(cwd, 'test/test', refDir);
+        expect(Barong.capture).toHaveBeenCalled();
+      });
+    });
   });
 
 });
