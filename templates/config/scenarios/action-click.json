@@ -1,0 +1,18 @@
+{
+  "label": "Liputan6 Mobile",
+  "url": "http://m.liputan6.com",
+  "viewport": {
+    "width": 375,
+    "height": 667
+  },
+  "captures": [
+    {
+      "label": "Tags",
+      "before_capture": {
+        "action": "click",
+        "selector": ".js-nav-right"
+      },
+      "selector": ".box:nth-child(2)"
+    }
+  ]
+}

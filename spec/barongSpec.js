@@ -32,6 +32,30 @@ describe("Barong", function(){
     });
   });
 
+  describe("getConfigJSON", function(){
+    var cwd = __dirname;
+    var configParams = '';
+
+    it("throw error when file not found", function(){
+      spyOn(Util, 'getConfigFiles').and.returnValue(false);
+
+      var result = function() {
+        Barong.getConfigJSON(cwd, configParams);
+      };
+      var expected = "Config file not found";
+
+      expect(result).toThrowError(expected);
+    });
+
+    it("should have called when file exists", function(){
+      spyOn(Util, 'getConfigFiles').and.returnValue(true);
+      spyOn(Util, 'readConfig').and.returnValue(true);
+      Barong.getConfigJSON(cwd, configParams);
+
+      expect(Util.readConfig).toHaveBeenCalled();
+    });
+  });
+
   describe("capture", function(){
     var cwd          = path.join(__dirname, '..');
     var dirname      = path.join(cwd, 'bitmaps_test');
@@ -194,7 +218,7 @@ describe("Barong", function(){
         Barong.compareDir(cwd, '.fakedir', '.reference');
       };
       var expected = "Test directory not found";
-      expect(result).toThrowError(TypeError, expected);
+      expect(result).toThrowError(Error, expected);
     });
 
     it("throw error when reference directory is not exists", function(){
@@ -212,27 +236,33 @@ describe("Barong", function(){
       var expected = "No images found in test directory";
       expect(result).toThrowError(expected);
     });
+  });
 
-    describe("test", function(){
-      var refDir = 'test/path';
+  describe("test", function(){
+    var cwd = __dirname;
+    var refDir = 'test/path';
 
-      beforeEach(function(){
-        spyOn(Barong, 'getConfigJSON').and.returnValue({
-          "captureTarget": 'test'
-        });
-        spyOn(Barong, 'compare').and.returnValue(true);
-        spyOn(Barong, 'capture').and.callFake(function() {
-          Barong.compare(cwd, 'test/test', refDir);
-        });
+    beforeEach(function(){
+      spyOn(Barong, 'getConfigJSON').and.returnValue({
+        "captureTarget": 'test'
       });
-
-      it("test should be call capture method", function(){
-        var config = {configFile:"barong", targetFolder:"test"};
-        var result = Barong.test(cwd, config, refDir);
-        expect(Barong.getConfigJSON).toHaveBeenCalledWith(cwd, config);
-        expect(Barong.compare).toHaveBeenCalledWith(cwd, 'test/test', refDir);
-        expect(Barong.capture).toHaveBeenCalled();
+      spyOn(Barong, 'compare').and.returnValue(true);
+      spyOn(Barong, 'capture').and.callFake(function() {
+        Barong.compare(cwd, 'test/test', refDir);
       });
+    });
+
+    it("test should be call capture method", function(){
+      var config = {configFile:"barong", targetFolder:"test"};
+      var result = Barong.test(cwd, config, refDir);
+      expect(Barong.getConfigJSON).toHaveBeenCalledWith(cwd, config);
+      expect(Barong.compare).toHaveBeenCalledWith(cwd, 'test/test', refDir);
+      expect(Barong.capture).toHaveBeenCalled();
+    });
+  });
+
+  xdescribe("init", function(){
+    it("create default config file", function(){
     });
   });
 

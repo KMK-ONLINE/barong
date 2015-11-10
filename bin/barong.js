@@ -22,7 +22,7 @@ program
         targetFolder: options.save
       });
     } catch (e) {
-      console.log(e.stack);
+      console.error(e);
     }
   });
 
@@ -42,7 +42,7 @@ program
         targetFolder: options.save
       }, options.against);
     } catch (e) {
-      console.log(e.stack);
+      console.error(e);
     }
   });
 
@@ -53,7 +53,18 @@ program
     try {
       Barong.compare(cwd, testDir, referenceDir);
     } catch (e) {
-      console.error(e.stack);
+      console.error(e);
+    }
+  });
+
+program
+  .command('init')
+  .description('create sample config file')
+  .action(function(){
+    try {
+      Barong.init(cwd);
+    } catch (e) {
+      console.error(e);
     }
   });
 

@@ -1,0 +1,19 @@
+{
+  "label": "Liputan6",
+  "url": "http://www.liputan6.com",
+  "captures": [
+    {
+      "label": "Hover on Navbar",
+      "before_capture": {
+        "action": "hover",
+        "selector": "#channel-all+li"
+      },
+      "selector": {
+        "left": 160,
+        "top": 30,
+        "width": 360,
+        "height": 560
+      }
+    }
+  ]
+}

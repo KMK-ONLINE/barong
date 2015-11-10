@@ -1,0 +1,14 @@
+{
+  "label": "Liputan6",
+  "url": "http://m.liputan6.com",
+  "viewport": {
+    "width": 375,
+    "height": 667
+  },
+  "captures": [
+    {
+      "label": "Headline Article",
+      "selector": ".article-snippet_headline"
+    }
+  ]
+}

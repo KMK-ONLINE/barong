@@ -21,6 +21,7 @@
   "homepage": "https://github.com/KMK-ONLINE/barong#readme",
   "dependencies": {
     "commander": "^2.9.0",
+    "fs-extra": "^0.26.2",
     "glob": "^5.0.15",
     "http-server": "^0.8.5",
     "js-beautify": "^1.5.10",

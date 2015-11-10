@@ -1,0 +1,10 @@
+{
+  "label": "Liputan6",
+  "url": "http://www.liputan6.com",
+  "captures": [
+    {
+      "label": "Top Navbar",
+      "selector": ".navbar--top"
+    }
+  ]
+}

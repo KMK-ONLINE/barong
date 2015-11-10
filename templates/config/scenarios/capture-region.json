@@ -1,0 +1,15 @@
+{
+  "label": "Liputan6",
+  "url": "http://www.liputan6.com",
+  "captures": [
+    {
+      "label": "Top Area",
+      "selector": {
+        "left": 160,
+        "top": 30,
+        "width": 1060,
+        "height": 100
+      }
+    }
+  ]
+}
