@@ -23,16 +23,18 @@
     "url": "https://github.com/KMK-ONLINE/barong/issues"
   },
   "homepage": "https://github.com/KMK-ONLINE/barong#readme",
+  "preferGlobal": "true",
   "dependencies": {
+    "casperjs": "^1.1.0-beta3",
     "commander": "^2.9.0",
     "fs-extra": "^0.26.2",
     "glob": "^5.0.15",
     "http-server": "^0.8.5",
     "js-beautify": "^1.5.10",
-    "node-handlebars": "^0.9.7",
-    "node-resemble-js": "0.0.4",
     "object-assign": "^4.0.1",
     "open": "0.0.5",
+    "phantomjs": "^1.9.18",
+    "resemblejs": "^2.0.1",
     "slimerjs": "^0.9.6",
     "slug": "^0.9.1"
   },
@@ -41,9 +43,7 @@
     "babel-preset-react": "^6.1.2",
     "babelify": "^7.2.0",
     "image-size": "^0.3.5",
-    "json-stable-stringify": "^1.0.0",
     "react": "^0.14.2",
-    "react-dom": "^0.14.2",
-    "resemblejs": "^2.0.1"
+    "react-dom": "^0.14.2"
   }
 }
