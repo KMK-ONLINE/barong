@@ -49,8 +49,12 @@ export class Detail extends React.Component {
   render() {
     let details = this.getDetails(this.props.item)
     let detailClass = 'detail';
-    if(this.props.item && !this.props.item.passed) {
-      detailClass += ' detail_failed'
+    if(this.props.item) {
+      if(this.props.item.passed) {
+        detailClass += ' detail_success'
+      }else{
+        detailClass += ' detail_failed'
+      }
     }
     return (
       <div className={detailClass}>

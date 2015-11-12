@@ -19911,8 +19911,12 @@ var Detail = exports.Detail = (function (_React$Component) {
     value: function render() {
       var details = this.getDetails(this.props.item);
       var detailClass = 'detail';
-      if (this.props.item && !this.props.item.passed) {
-        detailClass += ' detail_failed';
+      if (this.props.item) {
+        if (this.props.item.passed) {
+          detailClass += ' detail_success';
+        } else {
+          detailClass += ' detail_failed';
+        }
       }
       return _react2.default.createElement(
         "div",
@@ -20071,17 +20075,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ThumbnailsItem = exports.ThumbnailsItem = (function (_React$Component) {
   _inherits(ThumbnailsItem, _React$Component);
 
-  function ThumbnailsItem(props) {
+  function ThumbnailsItem() {
     _classCallCheck(this, ThumbnailsItem);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ThumbnailsItem).call(this, props));
-
-    _this.state = {
-      diff: '',
-      report: 0,
-      passed: false
-    };
-    return _this;
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(ThumbnailsItem).apply(this, arguments));
   }
 
   _createClass(ThumbnailsItem, [{
@@ -20112,9 +20109,14 @@ var ThumbnailsItem = exports.ThumbnailsItem = (function (_React$Component) {
     key: "render",
     value: function render() {
       var itemClassName = "thumbnails__item";
-      if (!this.props.data.passed) {
-        itemClassName += " thumbnails__item_failed";
+      if (typeof this.props.data.passed !== 'undefined') {
+        if (this.props.data.passed) {
+          itemClassName += " thumbnails__item_success";
+        } else {
+          itemClassName += " thumbnails__item_failed";
+        }
       }
+
       if (this.props.active) {
         itemClassName += " thumbnails__item_active";
       }

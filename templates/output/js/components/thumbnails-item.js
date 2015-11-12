@@ -2,15 +2,6 @@ import React from "react"
 import Resemble from "resemblejs"
 
 export class ThumbnailsItem extends React.Component {
-  
-  constructor(props) {
-    super(props)
-    this.state = {
-      diff: '',
-      report: 0,
-      passed: false
-    }
-  }
 
   componentDidMount() {
     Resemble.outputSettings({
@@ -36,9 +27,14 @@ export class ThumbnailsItem extends React.Component {
 
   render() {
     let itemClassName = "thumbnails__item"
-    if(!this.props.data.passed) {
-      itemClassName += " thumbnails__item_failed"
+    if(typeof this.props.data.passed !== 'undefined') {
+      if(this.props.data.passed) {
+        itemClassName += " thumbnails__item_success"
+      }else {
+        itemClassName += " thumbnails__item_failed"
+      }
     }
+
     if(this.props.active) {
       itemClassName += " thumbnails__item_active"
     }

@@ -32,10 +32,13 @@ body {
   height: 40px;
   margin: 5px;
   padding: 5px;
-  border: 2px solid yellowgreen;
+  border: 2px solid lightgray;
 }
 .thumbnails__item_failed {
   border-color: firebrick;
+}
+.thumbnails__item_success {
+  border-color: yellowgreen;
 }
 .thumbnails__item_active {
   box-shadow: 0 0 3px #fff, 0 0 1px #000;

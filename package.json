@@ -32,6 +32,7 @@
     "node-handlebars": "^0.9.7",
     "node-resemble-js": "0.0.4",
     "object-assign": "^4.0.1",
+    "open": "0.0.5",
     "slimerjs": "^0.9.6",
     "slug": "^0.9.1"
   },

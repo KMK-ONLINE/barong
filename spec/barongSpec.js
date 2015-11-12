@@ -201,12 +201,12 @@ describe("Barong", function(){
     it("turn json comparison data", function(){
       var expected = [
         {
-          a : '.test/a.png',
-          b : '.reference/a.png',
+          test : '.test/a.png',
+          ref : '.reference/a.png',
         },
         {
-          a : '.test/b.png',
-          b : '.reference/b.png',
+          test : '.test/b.png',
+          ref : '.reference/b.png',
         }
       ];
       var result = Barong.compareDir(cwd, '.test', '.reference');
@@ -258,11 +258,6 @@ describe("Barong", function(){
       expect(Barong.getConfigJSON).toHaveBeenCalledWith(cwd, config);
       expect(Barong.compare).toHaveBeenCalledWith(cwd, 'test/test', refDir);
       expect(Barong.capture).toHaveBeenCalled();
-    });
-  });
-
-  xdescribe("init", function(){
-    it("create default config file", function(){
     });
   });
 
