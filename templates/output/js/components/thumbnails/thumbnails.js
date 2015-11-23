@@ -1,5 +1,6 @@
 import React from "react"
-import {ThumbnailsItem} from "./thumbnails-item.js"
+import {ThumbnailsItem} from "./item/item.js"
+import styles from "./thumbnails.css"
 
 export class Thumbnails extends React.Component {
 
@@ -19,6 +20,9 @@ export class Thumbnails extends React.Component {
     this.props.setActiveItemIndex(index)
   }
 
+  componentDidMount() {
+    document.getElementById('key').focus()
+  }
  
   render() {
     let items = this.props.data.map(function(itemData, index){
@@ -35,9 +39,9 @@ export class Thumbnails extends React.Component {
     }.bind(this))
 
     return (
-      <div className="thumbnails"  onKeyUp={this.onKeyUp.bind(this)}>
+      <div className={styles.thumbnails}  onKeyUp={this.onKeyUp.bind(this)}>
         {items}
-        <input type="text" id="key" />
+        <input type="text" id="key" className={styles.key} />
       </div>
       )
   } 

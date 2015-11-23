@@ -1,6 +1,7 @@
 import React from "react"
-import {Thumbnails} from "./thumbnails.js"
-import {Detail} from "./detail.js"
+import styles from "./content.css"
+import {Thumbnails} from "../thumbnails/thumbnails.js"
+import {Detail} from "../detail/detail.js"
 
 export class Content extends React.Component {
 
@@ -33,7 +34,7 @@ export class Content extends React.Component {
       detail = <Detail item={this.state.data[this.state.activeItemIndex]}/>
     }
     return (
-      <div className="content">
+      <div className={styles.content}>
         <Thumbnails 
           data={this.state.data} 
           activeItemIndex={this.state.activeItemIndex}

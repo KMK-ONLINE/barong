@@ -1,0 +1,9 @@
+.footer {
+  border-top: 1px solid #FF5722;
+  padding: 15px 30px 10px;
+  font-size: 12px;
+}
+.link {
+  color: #FF5722;
+  text-decoration: none;
+}

@@ -1,0 +1,10 @@
+.thumbnails {
+  overflow: hidden;
+  width: 100%;
+  margin: 0 -5px;
+}
+
+.key {
+  position: absolute;
+  left: -99em;
+}

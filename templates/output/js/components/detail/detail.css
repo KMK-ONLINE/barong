@@ -1,0 +1,57 @@
+.detail {
+  margin: 30px -30px 30px;
+  padding: 0 30px;
+}
+
+.header {
+ display: flex;
+ background-color: lightgray;
+ margin: 30px -30px;
+ padding: 10px 30px 5px;
+ color: #fff; 
+}
+
+.title {
+  flex: 1;
+}
+
+.diff{ 
+  display: inline-block;
+}
+
+.diff_value {
+  font-size: 24px;
+}
+
+.images {
+  display: flex;
+  margin: 0 -10px;
+}
+
+.link {
+  flex: 1;
+  margin: 0 10px;
+  border: 1px solid yellowgreen;
+}
+
+.image {
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+.detail_failed .header {
+  background-color: firebrick;
+}
+
+.detail_failed .link {
+  border-color: firebrick;
+}
+
+.detail_success .header {
+  background-color: yellowgreen;
+}
+
+.detail_success .link {
+  border-color: yellowgreen;
+}

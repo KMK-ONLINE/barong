@@ -1,14 +1,14 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import {Header} from "./components/header.js"
-import {Footer} from "./components/footer.js"
-import {Content} from "./components/content.js"
+import {Header} from "./components/header/header.js"
+import {Footer} from "./components/footer/footer.js"
+import {Content} from "./components/content/content.js"
 
 class Page extends React.Component {
 
   render() {
     return (
-      <div className="page">
+      <div className="app">
         <Header />
         <Content data={this.props.data} />
         <Footer />
@@ -22,5 +22,4 @@ window.render = function(data){
     <Page data={data} />,
     document.getElementById('page')
   )
-  document.getElementById('key').focus()
 }

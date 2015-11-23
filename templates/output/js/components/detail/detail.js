@@ -1,4 +1,5 @@
 import React from "react"
+import styles from "./detail.css"
 
 export class Detail extends React.Component {
 
@@ -8,8 +9,8 @@ export class Detail extends React.Component {
 
   image(src, key) {
     return (
-      <a href="javascript:" key={key} className="detail__link">
-        <img className="detail__image" src={src} />
+      <a href="javascript:" key={key} className={styles.link}>
+        <img className={styles.image} src={src} />
       </a>
     );
   }
@@ -17,7 +18,7 @@ export class Detail extends React.Component {
   title() {
     if(this.props.item) {
       return (
-        <h2 className="detail__title"><strong>{this.props.item.ref}</strong></h2>
+        <h2 className={styles.title}><strong>{this.props.item.ref}</strong></h2>
       )
     }
     return '';
@@ -26,7 +27,7 @@ export class Detail extends React.Component {
   diff() {
     if(this.props.item) {
       return (
-        <span className="detail__diff">Diff percentage: <strong className="detail__diff-value">{this.props.item.report}%</strong></span>
+        <span className={styles.diff}>Diff percentage: <strong className={styles.diff_value}>{this.props.item.report}%</strong></span>
       )
     }
 
@@ -48,21 +49,21 @@ export class Detail extends React.Component {
 
   render() {
     let details = this.getDetails(this.props.item)
-    let detailClass = 'detail';
+    let detailClass = styles.detail;
     if(this.props.item) {
       if(this.props.item.passed) {
-        detailClass += ' detail_success'
+        detailClass = styles.detail + ' ' + styles.detail_success
       }else{
-        detailClass += ' detail_failed'
+        detailClass = styles.detail + ' ' + styles.detail_failed
       }
     }
     return (
       <div className={detailClass}>
-        <div className="detail__header">
+        <div className={styles.header}>
           {this.title()}
           {this.diff()}
         </div>
-        <div className="detail__images">
+        <div className={styles.images}>
           {details}
         </div>
       </div>
