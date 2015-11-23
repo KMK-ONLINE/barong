@@ -23,5 +23,4 @@ window.render = function(data){
     document.getElementById('page')
   )
   document.getElementById('key').focus()
-  console.log(document.getElementById('key'))
 }
