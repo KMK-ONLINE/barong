@@ -1,4 +1,8 @@
 # barong
+  
+   
+<img src="./docs/barong.png" alt="crappy barong vector" width="250" />
+
 **It help us see things that cannot be seen with our mortal eyes.**
 
 ## Requirement
@@ -17,7 +21,7 @@ First thing to do is, you need to create the configuration files. You can use `b
 ```
 $ barong init
 
-  Config initilized. We've included some sample config file for you to start with. 
+  Config initilized. We've included some sample config file for you to start with.
 
   barong.json               your main config file
   scenarios/
