@@ -60,6 +60,7 @@ describe("Barong", function(){
     var cwd          = path.join(__dirname, '..');
     var dirname      = path.join(cwd, 'bitmaps_test');
     var outputFile   = Util.generateFilename('Test Page', 'Test Capture');
+
     var configParams = {
       configFile: 'barong',
       targetFolder: 'reference'
@@ -106,11 +107,11 @@ describe("Barong", function(){
       beforeAll(function(done){
         configJSON.scenarios[0] = {
           "label"    : "Test Page",
-          "url"      : "http://www.liputan6.com",
+          "url"      : "https://github.com/KMK-ONLINE/barong",
           "captures" : [
             {
-              "label": "Test Capture",
-              "selector"    : ".navbar--top__logo",
+              "label"       : "Test Capture",
+              "selector"    : "article.markdown-body",
               "output_file" : path.join(dirname, configParams.targetFolder, outputFile + '.png')
             }
           ]
@@ -135,15 +136,15 @@ describe("Barong", function(){
       var targetFile;
       beforeAll(function(done){
         configJSON.scenarios[0] = {
-          "label": "Test Page",
-          "url": "http://www.liputan6.com",
-          "captures": [
+          "label"     : "Test Page",
+          "url"       : "https://github.com/KMK-ONLINE/barong",
+          "captures"  : [
             {
-              "label": "Test Capture",
+              "label" : "Test Capture",
               "selector": {
-                "top": 0,
-                "left": 0,
-                "width": 200,
+                "top"   : 0,
+                "left"  : 0,
+                "width" : 200,
                 "height": 400
               },
               "output_file" : path.join(dirname, configParams.targetFolder, outputFile + '.png')
