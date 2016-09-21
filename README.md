@@ -12,8 +12,10 @@ You will need to have [Node.js](https://nodejs.org/en/) installed.
 Install using `npm`
 ```
 $ npm install -g barong
+$ npm install -g casperjs
+$ npm install -g slimerjs
 ```
-This will install `barong` globally.
+This will install `barong`, `casperjs` and `slimerjs` globally.
 
 ## Usage
 ### Create a config file
