@@ -41,3 +41,11 @@ After you adjust the config file, you can start creating the reference files, by
 $ barong capture [config]
 ```
 This will run through all your scenarios configuration and do the captures.
+
+### Do the test
+After creating the reference files, you can start capture the the pages that you want to compare, by doing:
+```
+$ barong test [config]
+```
+After capturing files based on all scenarios, it will open a page to show the result.
+
