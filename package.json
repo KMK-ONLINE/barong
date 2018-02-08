@@ -31,7 +31,7 @@
     "open": "0.0.5",
     "phantomjs": "^1.9.18",
     "resemblejs": "^2.0.1",
-    "slimerjs": "^0.9.6",
+    "slimerjs": "^0.10.3",
     "slug": "^0.9.1"
   },
   "devDependencies": {
