@@ -47,11 +47,15 @@ program
   });
 
 program
-  .command('compare <testDir> <referenceDir>')
-  .description('compare <testDir> with <referenceDir>')
-  .action(function(testDir, referenceDir, options){
+  .command('compare')
+  .option('-t, --test-dir [testDir]', 'Test directory')
+  .option('-r, --ref-dir [refDir]', 'Reference directory')
+  .description('compare --test-dir capture_results/test --ref-dir capture_results/reference')
+  .action(function(options){
     try {
-      Barong.compare(cwd, testDir, referenceDir);
+      var testDir = options.testDir || 'capture_results/test';
+      var refDir = options.refDir || 'capture_results/reference';
+      Barong.compare(cwd, testDir, refDir);
     } catch (e) {
       console.error(e);
     }
