@@ -62,6 +62,21 @@ program
   });
 
 program
+  .command('diff-image')
+  .option('-t, --test-dir [testDir]', 'Test directory')
+  .option('-r, --ref-dir [refDir]', 'Reference directory')
+  .description('diff-image --test-dir capture_results/test --ref-dir capture_results/reference')
+  .action(function(options){
+    try {
+      var testDir = options.testDir || 'capture_results/test';
+      var refDir = options.refDir || 'capture_results/reference';
+      Barong.imageDiff(cwd, testDir, refDir);
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+program
   .command('init')
   .description('create sample config file')
   .action(function(){

@@ -26,6 +26,7 @@
     "fs-extra": "^0.26.2",
     "glob": "^5.0.15",
     "http-server": "^0.11.1",
+    "image-diff": "^2.0.0",
     "js-beautify": "^1.5.10",
     "object-assign": "^4.0.1",
     "open": "0.0.5",
